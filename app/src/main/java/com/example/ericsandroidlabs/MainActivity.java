@@ -15,4 +15,13 @@ public class MainActivity extends AppCompatActivity {
         //loads an XML file on the page
         setContentView(  R.layout.activity_main   );
     }
+
+
+//add 8 blank spaces
+
+
+
+
+
+
 }
