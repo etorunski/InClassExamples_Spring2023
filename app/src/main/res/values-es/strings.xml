@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Erics Android labs</string>
+    <string name="textView">Hola todos</string>
+
+    <string name="click">Click me in spanish</string>
+</resources>

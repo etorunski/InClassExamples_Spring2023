@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".ui.MainActivity"
     android:orientation="vertical"
     >
 
@@ -13,7 +13,7 @@
         android:textSize="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello world"
+        android:text="@string/textView"
         android:id="@+id/theText"
         />
 
@@ -22,15 +22,25 @@
         android:id="@+id/theButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="click me"/>
+        android:text="@string/click"/>
 
 <EditText
 
     android:textSize="30dp"
     android:layout_height="wrap_content"
     android:layout_width="wrap_content"
-    android:text="Hello There"
+    android:text="@string/edit"
     android:id="@+id/theEditText"
     />
 
+    <CheckBox
+        android:id="@+id/theCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I'm a checkbox" />
+
+    <Switch android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I'm a switch"
+        android:id="@+id/theSwitch" />
 </LinearLayout>

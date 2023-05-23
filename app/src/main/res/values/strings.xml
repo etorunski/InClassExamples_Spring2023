@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Erics Android labs</string>
+    <string name="textView">Hello world</string>
+    <string name="click">Click me</string>
+    <string name="edit">I\'m an edit text</string>
 </resources>
