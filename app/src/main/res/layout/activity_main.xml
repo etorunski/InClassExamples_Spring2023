@@ -4,10 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
+    android:layout_marginTop="27dp"
+    android:layout_marginBottom="27dp"
+    android:layout_marginLeft="48dp"
+    android:layout_marginRight="48dp"
     tools:context=".MainActivity">
 
 
     <Button
+        android:nextFocusLeft="@id/button4"
+        android:nextFocusDown="@id/switch1"
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,7 +25,8 @@
         tools:layout_editor_absoluteY="58dp" />
 
     <Button
-        android:id="@+id/button3"
+        android:nextFocusDown="@id/switch1"
+        android:id="@+id/middle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -29,6 +37,8 @@
         app:layout_constraintTop_toTopOf="@+id/button2" />
 
     <Button
+        android:nextFocusRight="@id/button2"
+        android:nextFocusDown="@id/switch1"
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,8 +46,8 @@
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button3"
-        app:layout_constraintTop_toTopOf="@+id/button3" />
+        app:layout_constraintStart_toEndOf="@+id/middle"
+        app:layout_constraintTop_toTopOf="@+id/middle" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -50,6 +60,7 @@
         app:srcCompat="@drawable/flag" />
 
     <Switch
+        android:nextFocusUp="@id/middle"
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
