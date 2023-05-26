@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ericsandroidlabs.data.MainActivityViewModel;
 import com.example.ericsandroidlabs.databinding.ActivityMainBinding;
@@ -48,7 +49,13 @@ MainActivityViewModel model;
         variableBinding.theSwitch.setOnCheckedChangeListener( ( a, b ) -> {
             model.isOn.postValue( b );
 
-        });
+        });                                             //onClick(View v)
+variableBinding.theImageButton.setOnClickListener( (v) -> {
+
+    Toast.makeText(this, "This is here", Toast.LENGTH_SHORT).show();
+
+});
+
 
         variableBinding.theText.setText(  model.theText );
 

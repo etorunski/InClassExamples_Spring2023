@@ -43,4 +43,18 @@
         android:layout_height="wrap_content"
         android:text="I'm a switch"
         android:id="@+id/theSwitch" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/theImageView"
+        android:src="@drawable/algonquin_logo"
+        />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/theImageButton"
+        android:src="@drawable/algonquin_logo"
+        />
 </LinearLayout>
