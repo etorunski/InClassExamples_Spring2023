@@ -2,11 +2,16 @@ package com.example.ericsandroidlabs;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.example.ericsandroidlabs.databinding.ActivityMainBinding;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,15 +31,57 @@ protected ActivityMainBinding binding;
         //loads an XML file on the page
         setContentView(  binding.getRoot()   );
 
+
+        //where can you save files:
+        File myDir =getFilesDir();
+        String path = myDir.getAbsolutePath();
+
+
+        SharedPreferences savedprefs = getSharedPreferences("MyFileName", Context.MODE_PRIVATE);
+
+        //get an editor
+        SharedPreferences.Editor edit = savedprefs.edit();
+
+
+
+
+
+        binding.emailText.setText(
+            savedprefs.getString("NAME", "default")
+        );
+
+
+
         binding.loginButton.setOnClickListener( (v) -> {
             Log.e(TAG, "You clicked the button");
 
+            String whatIsTyped = binding.emailText.getText().toString();
+
+            edit.putInt("Age", 26);
+            edit.putString("NAME",whatIsTyped );
+            //saves to disk
+            edit.commit();
+
 
             //where to go:             leaving here          going to SecondActivity
-            Intent nextPage = new Intent( this, SecondActivity.class);
+            /*Intent nextPage = new Intent( this, SecondActivity.class);
+
+             nextPage.putExtra("EMAIL", whatIsTyped);
+            nextPage.putExtra("AGE", 25);
+            nextPage.putExtra("DAY", "Tuesday");
+*/
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("*/*");
+
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"A@A.com", "B@B.com"}  );
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+
+
+
 
             //go to another page
-            startActivity(nextPage);
+            startActivity(intent);  //carries all the data to the next page
         } );
 
     }
