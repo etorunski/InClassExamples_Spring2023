@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"com.example.ericsandroidlabs.databinding","l":"ActivityMainBinding"},{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.example.ericsandroidlabs","l":"MainActivity"}];updateSearchResults();
