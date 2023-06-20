@@ -1,10 +1,12 @@
 package com.example.ericsandroidlabs;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.os.Bundle;
 import android.view.View;
@@ -12,15 +14,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ericsandroidlabs.data.MainActivityViewModel;
 import com.example.ericsandroidlabs.databinding.ActivityMainBinding;
 import com.example.ericsandroidlabs.databinding.ReceiveRowLayoutBinding;
 import com.example.ericsandroidlabs.databinding.SentRowLayoutBinding;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
     /** This holds the "Click me" button */
     protected Button myButton;
     protected RecyclerView recyclerView;
+
+    MessageDatabase myDB ;
+    ChatMessageDAO myDAO;
 
     /** This holds the edit text for typing into */
     protected EditText theEditText;
@@ -46,9 +56,23 @@ public class MainActivity extends AppCompatActivity {
         //loads an XML file on the page
         setContentView(  binding.getRoot()  );
 
+        myDB = Room.databaseBuilder(getApplicationContext(), MessageDatabase.class, "database-name").build();
+
+        myDAO = myDB.cmDAO();//the only function in MessageDatabase;
+
+
         model = new ViewModelProvider(this).get(MainActivityViewModel.class);
 //all new messages:
         theWords = model.theWords;
+
+
+        Executor thread = Executors.newSingleThreadExecutor();
+        //add all previous messages from database:
+        thread.execute(() -> {
+                List<ChatMessage> allMessages = myDAO.getAllMessages();
+                theWords.addAll(allMessages);
+          });
+
 
         myButton = binding.button;
         theEditText = binding.theEditText;
@@ -60,8 +84,16 @@ public class MainActivity extends AppCompatActivity {
             int type = 1;
             SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
             String currentDateandTime = sdf.format(new Date());
+
+            ChatMessage newMessage = new ChatMessage(input, currentDateandTime, type);
+            Executor thread1 = Executors.newSingleThreadExecutor();
+            thread1.execute(() ->{
+                    newMessage.id = myDAO.anyFunctionNameForInsertion(newMessage);//add to database;
+                   /*this runs in another thread*/
+            });
+
             //insert into ArrayList
-            theWords.add(new ChatMessage(input, currentDateandTime, type));
+            theWords.add(newMessage);
 
             myAdapter.notifyDataSetChanged(); //updates the rows
 
@@ -124,6 +156,51 @@ public class MainActivity extends AppCompatActivity {
                                     //This is a row:
         public MyRowHolder(@NonNull View itemView) {
             super(itemView);
+
+            itemView.setOnClickListener( click -> {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder( MainActivity.this );
+                builder.setMessage("Do you want to delete this?")
+                        .setTitle("QUestion")
+                        .setPositiveButton("Go Ahead",(dlg, which)->{
+
+                    //what is the index?
+                    int index = getAbsoluteAdapterPosition();
+
+                    ChatMessage toDelete = theWords.get(index);
+
+                    Executor thread1 = Executors.newSingleThreadExecutor();
+                    thread1.execute(() ->{
+                        myDAO.deleteThisChatMessage( toDelete );
+                        theWords.remove(index);//remove from our array list
+
+                        //must be done on the main UI thread
+                        runOnUiThread(() -> {  myAdapter.notifyDataSetChanged(); });
+
+                        Snackbar.make( recyclerView, "Deleted your message", Snackbar.LENGTH_LONG)
+                                .setAction("UNDO", clk -> {
+                                    Executor myTHread = Executors.newSingleThreadExecutor();
+                                    myTHread.execute(() -> {
+                                        myDAO.anyFunctionNameForInsertion(toDelete);
+
+                                        theWords.add(index,toDelete );
+                                       runOnUiThread( () ->  myAdapter.notifyDataSetChanged());
+                                    });
+
+
+
+                                } )
+                                .show();
+                        /*this runs in another thread*/
+                    });
+
+
+                } )
+                        .setNegativeButton("No", (dl, wh)->{ /*Hide the dialog, do nothing*/})
+
+                //appear:
+                .create().show();
+            });
             //THis holds the message Text:
             theWord = itemView.findViewById(R.id.theMessage);
 
