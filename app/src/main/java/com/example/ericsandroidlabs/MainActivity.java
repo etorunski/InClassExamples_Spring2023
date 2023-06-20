@@ -93,10 +93,10 @@ public class MainActivity extends AppCompatActivity {
             public int getItemViewType(int position){
 
                 //even
-               // if (position % 2 == 0)
+                if (position % 2 == 0)
                     return 1;
-                //else //odd
-                   // return 2;
+                else //odd
+                    return 2;
             }
             @Override
             public void onBindViewHolder(@NonNull MyRowHolder holder, int position) {
