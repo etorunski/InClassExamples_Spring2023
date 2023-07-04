@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-
     <EditText
         android:id="@+id/theEditText"
         android:layout_width="match_parent"
@@ -27,24 +25,24 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/theRecycleView"
-        android:layout_width="0dp"
+        android:layout_width="400dp"
         android:layout_height="0dp"
         android:layout_marginTop="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
-
-
+        app:layout_constraintTop_toBottomOf="@id/button" />
 
     <FrameLayout
         android:id="@+id/fragmentLocation"
         android:layout_width="0dp"
         android:layout_height="0dp"
 
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/blue"
+        app:layout_constraintStart_toEndOf="@id/theRecycleView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/theRecycleView">
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

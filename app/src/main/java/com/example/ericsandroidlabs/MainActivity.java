@@ -3,6 +3,8 @@ package com.example.ericsandroidlabs;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,12 +59,35 @@ public class MainActivity extends AppCompatActivity {
         //loads an XML file on the page
         setContentView(  binding.getRoot()  );
 
+
+        FrameLayout fragmentLocation = findViewById( R.id.fragmentLocation);
+
+        boolean IAmTablet = fragmentLocation != null;
+
+
+        model = new ViewModelProvider(this).get(MainActivityViewModel.class);
+
+        model.chosenMessage.observe(this, newChatMessage -> {
+
+            if(newChatMessage != null) {
+                FragmentManager fMgr = getSupportFragmentManager();
+
+                FragmentTransaction tx = fMgr.beginTransaction();
+
+                //what to show:
+                DetailsFragment frag = new DetailsFragment( newChatMessage );
+
+                //where to load:
+                tx.add(R.id.fragmentLocation, frag);
+                tx.addToBackStack("aqnything here");
+                tx.commit();//this will show it
+            }
+        });
+
         myDB = Room.databaseBuilder(getApplicationContext(), MessageDatabase.class, "database-name").build();
 
         myDAO = myDB.cmDAO();//the only function in MessageDatabase;
 
-
-        model = new ViewModelProvider(this).get(MainActivityViewModel.class);
 //all new messages:
         theWords = model.theWords;
 
@@ -159,6 +185,11 @@ public class MainActivity extends AppCompatActivity {
 
             itemView.setOnClickListener( click -> {
 
+                int index = getAbsoluteAdapterPosition();
+                ChatMessage thisMessage = theWords.get(index);
+                model.chosenMessage.postValue(  thisMessage );
+
+                /*
                 AlertDialog.Builder builder = new AlertDialog.Builder( MainActivity.this );
                 builder.setMessage("Do you want to delete this?")
                         .setTitle("QUestion")
@@ -191,16 +222,18 @@ public class MainActivity extends AppCompatActivity {
 
                                 } )
                                 .show();
-                        /*this runs in another thread*/
+                        /*this runs in another thread* /
                     });
 
 
                 } )
-                        .setNegativeButton("No", (dl, wh)->{ /*Hide the dialog, do nothing*/})
+                        .setNegativeButton("No", (dl, wh)->{ /*Hide the dialog, do nothing* /})
 
                 //appear:
-                .create().show();
-            });
+                .create().show();*/
+            }
+
+            );
             //THis holds the message Text:
             theWord = itemView.findViewById(R.id.theMessage);
 
