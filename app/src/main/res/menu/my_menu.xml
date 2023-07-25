@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item app:showAsAction="always"
+        android:icon="@drawable/trash_can"
+        android:id="@+id/garbage_id"
+        android:title="Garbage"
+        />
+    <item app:showAsAction="never"
+        android:icon="@drawable/trash_can"
+        android:id="@+id/garbage_2"
+        android:title=" More Garbage"
+        />
+    <item app:showAsAction="always"
+        android:icon="@drawable/trash_can"
+        android:id="@+id/garbage_3"
+        android:title="Garbage 3 "
+        />
+    <item app:showAsAction="always"
+        android:icon="@drawable/trash_can"
+        android:id="@+id/garbage_4"
+        android:title="Garbage 4"
+        />
+</menu>
